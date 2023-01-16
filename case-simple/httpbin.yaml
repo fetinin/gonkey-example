@@ -1,0 +1,12 @@
+- name: "POST response must contain same data as in request"
+  method: POST
+  path: /post
+  headers:
+    Content-Type: application/json
+
+  request: >
+    {"phrase": "Hello Gonkey!"}
+
+  response:
+    200: >
+      {"json": {"phrase": "Hello Gonkey!"}}

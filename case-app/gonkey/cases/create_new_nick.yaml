@@ -1,0 +1,32 @@
+- name: "call new-nick url"
+  description: >
+    КОГДА отправляется запрос на создание имени ДОЛЖЕН вернуться успешный ответ
+  method: GET
+  path: /new-nick
+  variables:
+    name: Fusion Toolbox
+  fixtures:
+    - empty
+  variables_to_set:
+    200:
+      nickname_from_resp: "nickname"
+  mocks:
+    nameApi:
+      strategy: constant
+      body: >
+        ["{{$name}}"]
+
+  dbQuery: SELECT name FROM nicknames limit 1
+  dbResponse:
+    - '{"name": "{{$name}}"}'
+  response:
+    200: >
+      {"nickname":"{{$name}}"}
+
+- name: "check nick is saved"
+  description: >
+    КОГДА отправляется запрос на список имён ДОЛЖЕН вернуться успешный ответ
+  method: GET
+  path: /
+  response:
+    200: "[\"{{$nickname_from_resp}}\"]"
